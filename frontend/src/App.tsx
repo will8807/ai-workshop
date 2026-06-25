@@ -5,7 +5,7 @@ const CHOICES: { id: GameChoice; label: string; icon: string }[] = [
 	{ id: "ROCK", label: "Rock", icon: "✊" },
 	{ id: "PAPER", label: "Paper", icon: "✋" },
 	{ id: "SCISSORS", label: "Scissors", icon: "✌️" },
-	{ id: "LIZARD", label: "Lizard", icon: "🦎" },
+	{ id: "LIZARD", label: "Lizard", icon: "🤏" },
 	{ id: "SPOCK", label: "Spock", icon: "🖖" },
 ];
 
