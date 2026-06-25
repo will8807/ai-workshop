@@ -20,13 +20,15 @@ package logical {
     // --- Derived Requirements (Traceability) ---
     requirement REQ_LOG_001 {
         doc /* Render UI, scores, timer, visual highlights, and capture player choices. */
-        derive from needs::NEED_SYS_016;
+        derive from needs::NEED_SYS_016_1;
+        derive from needs::NEED_SYS_016_2;
+        derive from needs::NEED_SYS_016_3;
         derive from needs::NEED_SYS_018;
         derive from needs::NEED_SYS_020;
         derive from needs::NEED_SYS_021;
         derive from needs::NEED_SYS_022;
         derive from needs::NEED_SYS_023;
-        derive from needs::NEED_SYS_026;
+        derive from needs::NEED_SYS_026_1;
     }
     verification case verifyReqLog001;
     verify REQ_LOG_001 by verifyReqLog001;
@@ -107,18 +109,21 @@ package logical {
         in item computerChoice : GameChoice;
         in item roundResult : RoundResult;
         in item matchResult : MatchOutcome;
-        satisfy needs::NEED_SYS_016;
+        satisfy needs::NEED_SYS_016_1;
+        satisfy needs::NEED_SYS_016_2;
+        satisfy needs::NEED_SYS_016_3;
         satisfy needs::NEED_SYS_021;
         satisfy needs::NEED_SYS_022;
         satisfy needs::NEED_SYS_023;
         satisfy needs::NEED_SYS_025;
-        satisfy needs::NEED_SYS_026;
+        satisfy needs::NEED_SYS_026_1;
     }
 
     action def ResetGameAction {
         in item resetTrigger : Boolean;
         out item initialScore : MatchScore;
-        satisfy needs::NEED_SYS_026;
+        satisfy needs::NEED_SYS_026_2;
+        satisfy needs::NEED_SYS_026_3;
     }
 
     // --- Composite Game Behavior (Activity Flow) ---

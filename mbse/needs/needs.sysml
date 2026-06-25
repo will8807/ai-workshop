@@ -8,7 +8,7 @@ package needs {
 
     requirement NEED_SYS_002 {
         attribute source : String = "problem-statement.txt:3";
-        doc /* The React frontend container shall be written in type-safe TypeScript. */
+        doc /* The React frontend container shall use type-safe TypeScript for all user interface logic. */
     }
 
     requirement NEED_SYS_003 {
@@ -23,7 +23,7 @@ package needs {
 
     requirement NEED_SYS_005 {
         attribute source : String = "problem-statement.txt:3";
-        doc /* The React frontend container shall be styled using Tailwind CSS. */
+        doc /* The React frontend container shall use Tailwind CSS for all user interface styling. */
     }
 
     requirement NEED_SYS_006 {
@@ -53,22 +53,22 @@ package needs {
 
     requirement NEED_SYS_011 {
         attribute source : String = "problem-statement.txt:5";
-        doc /* The Web Game System shall provide an optimized Containerfile for the React frontend container and an optimized Containerfile for the FastAPI backend container. */
+        doc /* The Web Game System shall provide the Containerfile for the React frontend container and the Containerfile for the FastAPI backend container. */
     }
 
     requirement NEED_SYS_012 {
         attribute source : String = "problem-statement.txt:6";
-        doc /* The Web Game System shall provide a Kubernetes Pod manifest file named pod.yaml defining the frontend and backend containers running in the same Pod. */
+        doc /* The Web Game System shall provide the Kubernetes Pod manifest file named pod.yaml defining the frontend container and the backend container running in the same Pod. */
     }
 
     requirement NEED_SYS_013 {
         attribute source : String = "problem-statement.txt:6";
-        doc /* The Kubernetes Pod manifest shall configure host port mapping to allow external access to the React frontend container. */
+        doc /* The Kubernetes Pod manifest shall configure the host port mapping enabling external access to the React frontend container. */
     }
 
     requirement NEED_SYS_014 {
         attribute source : String = "problem-statement.txt:7";
-        doc /* The Web Game System shall provide a Taskfile.yml defining automated tasks to build the container images, start the Pod using Podman, and stop the Pod. */
+        doc /* The Web Game System shall provide the Taskfile.yml defining automated tasks that build the container images, start the Pod using Podman, and stop the Pod. */
     }
 
     requirement NEED_SYS_015 {
@@ -126,9 +126,19 @@ package needs {
         }
     }
 
-    requirement NEED_SYS_016 {
+    requirement NEED_SYS_016_1 {
         attribute source : String = "problem-statement.txt:20";
-        doc /* The React frontend container shall display an initial screen presenting a starting score of 0 wins for the player and 0 wins for the computer, alongside a control element to start the game. */
+        doc /* The React frontend container shall display the initial screen presenting the starting scoreboard with 0 wins for the player. */
+    }
+
+    requirement NEED_SYS_016_2 {
+        attribute source : String = "problem-statement.txt:20";
+        doc /* The React frontend container shall display the initial screen presenting the starting scoreboard with 0 wins for the computer. */
+    }
+
+    requirement NEED_SYS_016_3 {
+        attribute source : String = "problem-statement.txt:20";
+        doc /* The React frontend container shall display the control element initiating the game round on the initial screen. */
     }
 
     requirement NEED_SYS_017 {
@@ -143,7 +153,7 @@ package needs {
 
     requirement NEED_SYS_019 {
         attribute source : String = "problem-statement.txt:22";
-        doc /* The backend container shall perform its random selection selection asynchronously during the countdown timer. */
+        doc /* The backend container shall perform the random computer selection asynchronously during the countdown timer. */
     }
 
     requirement NEED_SYS_020 {
@@ -153,7 +163,7 @@ package needs {
 
     requirement NEED_SYS_021 {
         attribute source : String = "problem-statement.txt:23";
-        doc /* When the countdown timer expires, the React frontend container shall display the player's choice and the computer's choice simultaneously. */
+        doc /* When the countdown timer expires, the React frontend container shall display the player's choice and the computer's choice on the same refresh cycle. */
     }
 
     requirement NEED_SYS_022 {
@@ -173,11 +183,21 @@ package needs {
 
     requirement NEED_SYS_025 {
         attribute source : String = "problem-statement.txt:26";
-        doc /* When either player or computer reaches 2 wins, the React frontend container shall declare the ultimate winner of the match with an appropriate victory or defeat message. */
+        doc /* When either the player or the computer reaches 2 wins, the React frontend container shall display the ultimate winner of the match with the victory or the defeat message. */
     }
 
-    requirement NEED_SYS_026 {
+    requirement NEED_SYS_026_1 {
         attribute source : String = "problem-statement.txt:26";
-        doc /* When a match is completed, the React frontend container shall display a reset button that resets the scores and the game state to their initial values. */
+        doc /* When the match is completed, the React frontend container shall display the reset button. */
+    }
+
+    requirement NEED_SYS_026_2 {
+        attribute source : String = "problem-statement.txt:26";
+        doc /* When the user clicks the reset button, the Web Game System shall reset the match scores to zero. */
+    }
+
+    requirement NEED_SYS_026_3 {
+        attribute source : String = "problem-statement.txt:26";
+        doc /* When the user clicks the reset button, the Web Game System shall transition the active game state to the initial game state. */
     }
 }
