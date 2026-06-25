@@ -50,7 +50,7 @@
 
 ### Backlog Item Status
 - [x] **Story 1: Backend Core, Pyproject.toml, and Game Logic Engine** (`Completed`)
-- [ ] **Story 2: Frontend Environment and Static UI Elements** (`Pending`)
+- [x] **Story 2: Frontend Environment and Static UI Elements** (`Completed`)
 - [ ] **Story 3: Interactive HMI Loop and Countdown State Machine** (`Pending`)
 - [ ] **Story 4: Monolithic Build Integration and static file serving** (`Pending`)
 - [ ] **Story 5: Containerization, Kubernetes Pod, and Taskfile Automation** (`Pending`)
