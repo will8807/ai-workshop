@@ -80,16 +80,141 @@ These requirements map directly to the MBSE needs specification defined in `mbse
 * **verify_pod_deployment**: Kubernetes integration test confirming both containers run inside the single pod and that host port forwarding is correct.
 
 ## 8. Detailed Implementation Plan & Proposed Issues
-*(To be compiled and expanded in Phase 4 after Logical and Physical architectures are approved)*
+
+To achieve our "unified-monolith" game baseline, the implementation is decomposed into 5 chronological, vertical-slice user stories. These are designed to be independently verifiable and test-driven, moving sequentially from core game logic, to UI presentation, integration, and containerized deployment.
+
+### Story Sequence & Dependency Map
+
+```mermaid
+graph TD
+    S1[Story 1: Backend Core, Pyproject.toml, and Game Logic Engine] --> S2[Story 2: Frontend Environment and Static UI Elements]
+    S2 --> S3[Story 3: Interactive HMI Loop and Countdown State Machine]
+    S3 --> S4[Story 4: Monolithic Build Integration and Static Serving]
+    S4 --> S5[Story 5: Containerization, Kubernetes Pod, and Taskfile Automation]
+```
+
+---
+
+### Story 1: Backend Core, Pyproject.toml, and Game Logic Engine
+* **Title**: Story 1: Backend Core, Pyproject.toml, and Game Logic Engine
+* **Type**: AFK
+* **Blocked by**: None (can start immediately)
+* **What to build**:
+  Setup the Python backend environment and structure using UV as the package manager, with metadata and dependencies defined in a `pyproject.toml` file. Develop the core FastAPI application containing the endpoint for game evaluation and the asynchronous choice generation. Implement the full classic RPSLS rules engine that resolves player vs. computer choices. Write a comprehensive Pytest test suite to verify all 10 classic win/loss outcomes, tie cases, and asynchronous computer selection generation as described in the `rules_engine.feature` and `computer_choice.feature`.
+* **Acceptance Criteria**:
+  - [ ] The Python project is managed via UV, with a valid `pyproject.toml` file and a lockfile.
+  - [ ] A FastAPI app is initialized and can be run.
+  - [ ] The rules engine must implement the 10 classic game outcomes and tie cases:
+    - Scissors cuts Paper (Player Win vs Computer Win)
+    - Paper covers Rock (Player Win vs Computer Win)
+    - Rock crushes Lizard (Player Win vs Computer Win)
+    - Lizard poisons Spock (Player Win vs Computer Win)
+    - Spock smashes Scissors (Player Win vs Computer Win)
+    - Scissors decapitates Lizard (Player Win vs Computer Win)
+    - Lizard eats Paper (Player Win vs Computer Win)
+    - Paper disproves Spock (Player Win vs Computer Win)
+    - Spock vaporizes Rock (Player Win vs Computer Win)
+    - Rock crushes Scissors (Player Win vs Computer Win)
+    - Ties (e.g., Rock vs Rock, Spock vs Spock) must be evaluated as tie rounds that do not count.
+  - [ ] All 10 RPSLS rules evaluation outcomes must be fully covered by 100% passing Pytest unit tests mapping directly to `rules_engine.feature`.
+  - [ ] Computer selection must randomly generate one of the five valid game choices (Rock, Paper, Scissors, Lizard, Spock). This must be covered by unit tests mapping to `computer_choice.feature`.
+  - [ ] A test suite verifies that the computer's selection is kept hidden from the client during round initiation/countdown.
+* **Out of Scope**:
+  - Frontend development of any kind (Bun, React, Tailwind UI components are out of scope).
+  - Building container images or Kubernetes pod definitions (out of scope).
+  - Taskfile automation (out of scope).
+  - Serving compiled frontend static files from the FastAPI app (out of scope).
+
+---
+
+### Story 2: Frontend Environment and Static UI Elements
+* **Title**: Story 2: Frontend Environment and Static UI Elements
+* **Type**: AFK
+* **Blocked by**: Story 1: Backend Core, Pyproject.toml, and Game Logic Engine
+* **What to build**:
+  Initialize the React frontend environment using Bun as the package manager and build tool. Set up TypeScript for strict type checking and Tailwind CSS for styling. Design and implement the static UI layout containing the welcome screen, a scoreboard initialized to 0 wins for the player and 0 wins for the computer, and the static game choices (Rock, Paper, Scissors, Lizard, Spock). Ensure all interfaces and state models are defined with strict TypeScript types as described in `ui_presentation.feature` (Scenario 1).
+* **Acceptance Criteria**:
+  - [ ] The React frontend is initialized with Bun, containing `package.json` and strict TypeScript configurations.
+  - [ ] Tailwind CSS is configured and integrated.
+  - [ ] The welcome screen renders correctly in its initial state showing player's score as 0 and computer's score as 0 (Scenario: Initial game screen presentation and scoreboard rendering).
+  - [ ] A "Start Game" control button is presented.
+  - [ ] When the game is in its initial state, selection options (Rock, Paper, Scissors, Lizard, Spock) are rendered but are disabled/not interactive.
+  - [ ] Static elements are fully tested using Bun's built-in test runner with mock/test specifications.
+* **Out of Scope**:
+  - Interactive timer countdown, active player choosing mechanics, score increments, and game loops (all out of scope, implemented in Story 3).
+  - API integration with backend endpoints (out of scope, mocked or left for Story 3).
+  - Production monolithic build compilation and FastAPI integration (out of scope, left for Story 4).
+  - Production containerization or Kubernetes manifests (out of scope, left for Story 5).
+
+---
+
+### Story 3: Interactive HMI Loop and Countdown State Machine
+* **Title**: Story 3: Interactive HMI Loop and Countdown State Machine
+* **Type**: AFK
+* **Blocked by**: Story 2: Frontend Environment and Static UI Elements
+* **What to build**:
+  Connect the frontend and backend using an interactive HMI loop and a synchronized countdown state machine. Implement the 5-second countdown timer that triggers when "Start Game" is clicked. Enable the selection options during the countdown, allow the player to select one of the five choices, visually highlight the player's choice, and make an asynchronous call to the backend to generate and evaluate the computer's selection. Upon countdown expiration, simultaneously reveal both choices, display the evaluated round outcome, update the scoreboard (with best-of-three match logic), handle tie rounds properly, declare the ultimate winner when 2 wins are reached, and provide a reset button to start a fresh match.
+* **Acceptance Criteria**:
+  - [ ] Clicking "Start Game" transitions the game from the welcoming screen to the countdown state, initiating a 5-second countdown timer (Scenario: Starting the game triggers countdown and timer tick).
+  - [ ] During countdown, choice buttons (Rock, Paper, Scissors, Lizard, Spock) are enabled.
+  - [ ] Selecting a choice visually highlights it while keeping the evaluation outcome hidden until the countdown expires (Scenario: Visual countdown and selection highlights during active round).
+  - [ ] Upon timer expiration, the game transitions to the reveal/evaluation state, showing the player's choice and computer's choice simultaneously (Scenario: Simultaneous choice reveal and round outcome display).
+  - [ ] The UI displays the correct round winner and explanation message returned from the backend rules engine.
+  - [ ] Scoreboard tracks and displays wins. If either reaches 2 wins, the match is terminated and the ultimate winner is declared (Scenario: Score limits and match termination).
+  - [ ] A reset button is shown upon match completion. Clicking it resets scores to 0-0 and transitions back to the initial welcoming state (Scenario: Match reset clears score and starts fresh).
+  - [ ] Tie rounds are handled, and a message explicitly states that a tie round does not increment the win count.
+  - [ ] Full client-server interaction is verified by unit and integration tests under Bun and Pytest.
+* **Out of Scope**:
+  - Production monolithic build compilation (out of scope).
+  - Running frontend static files directly from the backend server (out of scope).
+  - Docker/Containerfiles, Kubernetes pod yaml, and Go-Task files (out of scope).
+
+---
+
+### Story 4: Monolithic Build Integration and static file serving
+* **Title**: Story 4: Monolithic Build Integration and static file serving
+* **Type**: AFK
+* **Blocked by**: Story 3: Interactive HMI Loop and Countdown State Machine
+* **What to build**:
+  Integrate the compiled React frontend into the FastAPI backend as a unified monolith. Configure Bun's production build/bundling system to compile the frontend assets into a static directory. Update the FastAPI application to mount and serve these compiled frontend static files (HTML, JS, CSS) using Python's static serving middleware. This allows the entire game (both backend APIs and frontend UI) to be run and served on a single host and port.
+* **Acceptance Criteria**:
+  - [ ] Bun builds production-ready static assets (e.g., using `bun run build` or similar) into a target dist/build directory.
+  - [ ] The FastAPI backend uses `fastapi.staticfiles.StaticFiles` to mount the static assets folder.
+  - [ ] Running the backend FastAPI server locally allows access to the complete, fully functional game UI at `/` (root), with API routes nested (e.g., under `/api`).
+  - [ ] No separate development server is required for the frontend to communicate with the backend.
+  - [ ] Static file serving configuration is validated via automated integration tests.
+* **Out of Scope**:
+  - Docker/Container packaging (out of scope, handled in Story 5).
+  - Local Kubernetes Pod deployment configurations (out of scope, handled in Story 5).
+  - Taskfile development (out of scope, handled in Story 5).
+
+---
+
+### Story 5: Containerization, Kubernetes Pod, and Taskfile Automation
+* **Title**: Story 5: Containerization, Kubernetes Pod, and Taskfile Automation
+* **Type**: AFK
+* **Blocked by**: Story 4: Monolithic Build Integration and static file serving
+* **What to build**:
+  Package the unified monolith into container images using optimized Containerfiles. Design a high-fidelity Kubernetes Pod manifest (`pod.yaml`) defining the containers and correct host port mapping for external access. Create a Go-Task automation configuration (`Taskfile.yml`) to script container building, Pod execution via Podman (`podman play kube`), and teardown. This provides a single-command orchestration interface for local development and verification.
+* **Acceptance Criteria**:
+  - [ ] Optimized Containerfiles are created (one for frontend, one for backend, or a unified multi-stage Containerfile for the monolith as specified by the "unified-monolith" model).
+  - [ ] A `pod.yaml` manifest defines the multi-container pod running locally.
+  - [ ] The `pod.yaml` manifest correctly maps host ports to externalize access to the game.
+  - [ ] A Go-Task `Taskfile.yml` is provided and includes tasks to build the container images, run the pod (using `podman play kube`), and stop/clean up the pod.
+  - [ ] Running the task command successfully starts the containerized unified game monolith.
+  - [ ] Verification of deployment is automated and tested.
+* **Out of Scope**:
+  - Production deployment to public clouds or external Kubernetes clusters (out of scope).
+  - Multi-tenant authentication or database persistence (out of scope).
 
 ## 9. Workflow State & Checklist of Activities
-* **Current Workflow State**: **Phase 3: Physical Architecture Candidates & UX**
+* **Current Workflow State**: **Phase 4: Planning & Backlog Refinement**
 
 ### Checklist of Activities:
 - [x] Phase 1: Feature Initialization & Refinement (Compile PRD, checkout branch, model needs, validate MBSE)
 - [x] Phase 2: Logical Architecture Development (Derive requirements, model logical components, functional behaviors, halt for User Control Gate)
 - [x] Phase 3: Physical Architecture Candidates & UX (Develop candidates, pros-cons matrix, UI wireframes, halt for User Selection Gate)
-- [ ] Phase 4: Backlog Refinement & Plan Development (Decompose plan, sequence stories, finalize backlog)
+- [x] Phase 4: Backlog Refinement & Plan Development (Decompose plan, sequence stories, finalize backlog)
 - [ ] Phase 5: Package Approval Gate (Awaiting written plan approval, record sign-off)
 - [ ] Phase 6: Multi-Subagent Feature Implementation (Develop, verify, document each ticket)
 - [ ] Phase 7: QA & Verification (Audit test reports, ensure zero regressions)

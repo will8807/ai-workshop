@@ -1,4 +1,5 @@
 # BDD & SysML v2 Traceability Report
+**Target Feature**: `rock-paper-scissors-lizard-spock`
 
 ## 1. Summary Statistics
 

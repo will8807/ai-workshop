@@ -1,8 +1,8 @@
 # PRD Workflow State & Checklist Tracker
 
 - **Feature Name**: Rock-Paper-Scissors-Lizard-Spock Web Game
-- **Current Workflow State**: **Phase 3: Physical Architecture Candidates & UX (Completed)**
-- **Next Workflow State**: **Phase 4: Backlog Refinement & Plan Development (Ready)**
+- **Current Workflow State**: **Phase 4: Planning & Backlog Refinement**
+- **Next Workflow State**: **Phase 5: Package Approval Gate (Ready)**
 
 ## Checklist of Activities:
 - [x] **Phase 1: Feature Initialization & Refinement**
@@ -23,9 +23,9 @@
   - [x] Score candidates in a pros/cons matrix
   - [x] Design UI wireframes / journeys
   - [x] **Halt for User Selection Gate 2**
-- [ ] **Phase 4: Backlog Refinement & Plan Development**
-  - [ ] Decompose plan into atomic, vertical-slice stories
-  - [ ] Map chronological dependencies
+- [x] **Phase 4: Backlog Refinement & Plan Development**
+  - [x] Decompose plan into atomic, vertical-slice stories
+  - [x] Map chronological dependencies
 - [ ] **Phase 5: Package Approval Gate**
   - [ ] **Halt for User Control Gate 3**
 - [ ] **Phase 6: Multi-Subagent Feature Implementation**
@@ -47,3 +47,10 @@
 | **Phase 3: Physical Candidate** | *Pending* | *Pending* | *Pending* |
 | **Phase 5: Package Approval** | *Pending* | *Pending* | *Pending* |
 | **Phase 9: Peer Review** | *Pending* | *Pending* | *Pending* |
+
+### Backlog Item Status
+- [ ] **Story 1: Backend Core, Pyproject.toml, and Game Logic Engine** (`Pending`)
+- [ ] **Story 2: Frontend Environment and Static UI Elements** (`Pending`)
+- [ ] **Story 3: Interactive HMI Loop and Countdown State Machine** (`Pending`)
+- [ ] **Story 4: Monolithic Build Integration and static file serving** (`Pending`)
+- [ ] **Story 5: Containerization, Kubernetes Pod, and Taskfile Automation** (`Pending`)
