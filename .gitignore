@@ -2,3 +2,23 @@
 .agentskills/backups/
 .agentskills/tmp/
 .temp_agentskills/
+
+# Python virtual environments and caches
+.venv/
+__pycache__/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright_cache/
+
+# Node dependencies and builds
+node_modules/
+dist/
+build/
+.output/
+.bun/
+
+# Graphify output
+graphify-out/
+
+
