@@ -1,0 +1,13 @@
+version: '3'
+
+includes:
+  as:
+    taskfile: .agentskills/Taskfile.yml
+    dir: .
+
+tasks:
+  validate-mbse:
+    desc: "Audits SysML requirements coverage"
+    cmds:
+      - python3 .opencode/scripts/validate_traceability.py
+

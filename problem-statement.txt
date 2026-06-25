@@ -1,0 +1,36 @@
+Your task is to build a web-based "Rock-Paper-Scissors-Lizard-Spock" game. The project must include a modern Python backend, a strictly typed React frontend, and be containerized. You must define the deployment as a Kubernetes Pod manifest that can be run locally using podman play kube, and orchestrated using a Taskfile.yml.
+1. System Architecture & Tech Stack:
+•	Frontend: 100% type-safe TypeScript React application. You must use bun as the package manager, test runner, and build tool. Style it with CSS or a lightweight framework like Tailwind for a clean, fun, and simple UI. Ensure all game states and API payloads are strictly typed with TypeScript interfaces.
+•	Backend: Python (use a modern framework like FastAPI). You must use uv as the Python environment and package manager. All dependencies and project metadata must be defined in a pyproject.toml file; do not generate a requirements.txt. The backend should handle the computer's random choice generation and the win/loss evaluation logic to prevent frontend cheating.
+•	Containerization & Orchestration: > * Provide a Containerfile (or Dockerfile) for the frontend (optimized for bun) and the backend (optimized for uv).
+o	Provide a Kubernetes Pod manifest (pod.yaml) that defines both the frontend and backend as separate containers running within the same Pod. Ensure ports are mapped correctly so the host can access the frontend.
+o	Provide a Taskfile.yml (for the task runner go-task) that includes tasks to build the container images, start the pod (using podman play kube), and stop the pod.
+2. Game Logic (The Rules): Implement the exact rules of the Big Bang Theory variant:
+•	Scissors cuts Paper
+•	Paper covers Rock
+•	Rock crushes Lizard
+•	Lizard poisons Spock
+•	Spock smashes Scissors
+•	Scissors decapitates Lizard
+•	Lizard eats Paper
+•	Paper disproves Spock
+•	Spock vaporizes Rock
+•	Rock crushes Scissors
+3. UI/UX and State Flow:
+•	Initial State: A welcoming screen with the current score (Player: 0, Computer: 0) and a prominent "Start Game" button.
+•	Countdown Phase: When "Start Game" is clicked, a 5-second countdown timer begins. The user must click one of the 5 options before the timer hits 0.
+•	Action Phase: The computer makes its selection randomly in the background. The user's selection is visually highlighted but not immediately evaluated.
+•	Reveal Phase: When the timer hits 0, both the player's and the computer's choices are revealed simultaneously.
+•	Resolution: Display the result of the round (e.g., "Spock vaporizes Rock! You win this round."). If it's a tie, explicitly state that the round doesn't count.
+•	Match Condition: Keep a running tally. The game continues loop-by-loop until either the Player or the Computer reaches 2 wins (Best 2 out of 3).
+•	Game Over: Declare the ultimate winner, celebrate or commiserate, and provide a "Play Again" button that resets the score and state.
+4. Deliverables: Please generate the full directory structure, all necessary source code files for the frontend and backend, the dependency files (package.json, pyproject.toml), the Containerfiles, the pod.yaml Kubernetes manifest, and the Taskfile.yml. Ensure your code includes comments explaining how the frontend and backend communicate within the pod.
+Please organize your work using the following expected project directory structure:
+.
+├── frontend/        # React frontend application (using Bun)
+├── backend/         # Python FastAPI backend (using UV)
+├── mbse/            # Model-Based Systems Engineering specifications
+│   ├── sysml/       # SysML v2 designs and structural/behavioral models
+│   └── ux/          # User experience designs, wireframes, and flows
+├── infra/           # Infrastructure config (Kubernetes manifests, Containerfiles, Taskfile)
+└── features/        # BDD feature acceptance test specifications and steps
