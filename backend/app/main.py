@@ -217,12 +217,11 @@ def health_check() -> dict[str, str]:
     return {"status": "ok"}
 
 
-# API root fallback if static files are not compiled/mounted
-@app.get("/")
-def root_route() -> dict[str, str]:
-    """Root route description fallback."""
-    return {"message": "Rock-Paper-Scissors-Lizard-Spock FastAPI Game Server"}
-
-
 if os.path.isdir(frontend_dist_path):
     app.mount("/", StaticFiles(directory=frontend_dist_path, html=True), name="static")
+else:
+    # API root fallback if static files are not compiled/mounted
+    @app.get("/")
+    def root_route() -> dict[str, str]:
+        """Root route description fallback."""
+        return {"message": "Rock-Paper-Scissors-Lizard-Spock FastAPI Game Server"}

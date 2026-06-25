@@ -136,3 +136,10 @@ def test_match_reset() -> None:
     assert reset_data["computer_score"] == 0
     assert reset_data["status"] == "Ongoing"
     assert reset_data["winner"] == "None"
+
+
+def test_static_file_serving() -> None:
+    # Test that the static files are mounted and served correctly
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "html" in response.text or "RPSLS" in response.text

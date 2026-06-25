@@ -18,3 +18,7 @@ build/
 .output/
 .bun/
 
+# Graphify output
+graphify-out/
+
+

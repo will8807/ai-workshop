@@ -11,3 +11,84 @@ tasks:
     cmds:
       - python3 .opencode/scripts/validate_traceability.py
 
+  build-frontend:
+    desc: "Builds the React frontend container image"
+    cmds:
+      - podman build -t rpsls-frontend:latest -f frontend/Containerfile frontend
+
+  build-backend:
+    desc: "Builds the FastAPI backend container image"
+    cmds:
+      - podman build -t rpsls-backend:latest -f backend/Containerfile backend
+
+  build:
+    desc: "Builds all container images"
+    cmds:
+      - task: build-frontend
+      - task: build-backend
+
+  up:
+    desc: "Starts the multi-container game Pod via Podman"
+    cmds:
+      - podman play kube pod.yaml
+
+  down:
+    desc: "Stops and tears down the multi-container game Pod"
+    cmds:
+      - podman play kube --down pod.yaml || true
+
+  test-backend:
+    desc: "Runs backend tests"
+    dir: backend
+    cmds:
+      - uv run pytest tests
+
+  test-frontend:
+    desc: "Runs frontend tests"
+    dir: frontend
+    cmds:
+      - bun test
+
+  test:
+    desc: "Runs all unit/integration tests"
+    cmds:
+      - task: test-backend
+      - task: test-frontend
+
+  lint-backend:
+    desc: "Checks linting and formatting in backend"
+    dir: backend
+    cmds:
+      - uv run ruff check app tests
+      - uv run ruff format --check app tests
+
+  lint-frontend:
+    desc: "Checks linting and formatting in frontend"
+    dir: frontend
+    cmds:
+      - bun run lint
+
+  lint:
+    desc: "Runs all static analysis checks"
+    cmds:
+      - task: lint-backend
+      - task: lint-frontend
+
+  typecheck-backend:
+    desc: "Typechecks backend using pyright"
+    dir: backend
+    cmds:
+      - uv run pyright app
+
+  typecheck:
+    desc: "Runs type checking across backend"
+    cmds:
+      - task: typecheck-backend
+
+  ci:
+    desc: "Executes complete pre-commit CI validations"
+    cmds:
+      - task: lint
+      - task: typecheck
+      - task: test
+      - task: validate-mbse
