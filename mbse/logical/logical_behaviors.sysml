@@ -17,9 +17,10 @@ package logical {
         attribute matchWinner : String;
     }
 
-    // --- Derived Requirements (Traceability) ---
+    // --- Derived Requirements (INCOSE-Compliant Logical Requirements) ---
     requirement REQ_LOG_001 {
-        doc /* Render UI, scores, timer, visual highlights, and capture player choices. */
+        attribute source : String = "Derivation: User Presentation";
+        doc /* The User Presentation Unit shall render the game interface representing the scoreboard, the countdown timer, the selection highlights, and the match results. */
         derive from needs::NEED_SYS_016_1;
         derive from needs::NEED_SYS_016_2;
         derive from needs::NEED_SYS_016_3;
@@ -34,14 +35,16 @@ package logical {
     verify REQ_LOG_001 by verifyReqLog001;
 
     requirement REQ_LOG_002 {
-        doc /* Orchestrate game states, countdown timer, asynchronous choices, and evaluation. */
+        attribute source : String = "Derivation: Game Coordinator";
+        doc /* The Game Coordinator shall orchestrate the game state transitions throughout the match. */
         derive from needs::NEED_SYS_017;
     }
     verification case verifyReqLog002;
     verify REQ_LOG_002 by verifyReqLog002;
 
     requirement REQ_LOG_003 {
-        doc /* Generate random selection for the computer asynchronously. */
+        attribute source : String = "Derivation: Random Number Generator";
+        doc /* The Random Number Generator Unit shall generate the computer selection asynchronously upon receiving the coordinator trigger. */
         derive from needs::NEED_SYS_009;
         derive from needs::NEED_SYS_019;
     }
@@ -49,7 +52,8 @@ package logical {
     verify REQ_LOG_003 by verifyReqLog003;
 
     requirement REQ_LOG_004 {
-        doc /* Evaluate round outcome based on the classic Rock-Paper-Scissors-Lizard-Spock rules. */
+        attribute source : String = "Derivation: Rules Engine";
+        doc /* The Game Logic Engine shall evaluate the outcome of each round based on the classic Rock-Paper-Scissors-Lizard-Spock rules. */
         derive from needs::NEED_SYS_010;
         derive from needs::NEED_SYS_015;
     }
@@ -57,7 +61,8 @@ package logical {
     verify REQ_LOG_004 by verifyReqLog004;
 
     requirement REQ_LOG_005 {
-        doc /* Handle match termination and declare the winner when either player or computer reaches 2 wins. */
+        attribute source : String = "Derivation: Score Keeper";
+        doc /* The Game Coordinator shall terminate the match when either the player or the computer reaches two wins. */
         derive from needs::NEED_SYS_024;
         derive from needs::NEED_SYS_025;
     }
