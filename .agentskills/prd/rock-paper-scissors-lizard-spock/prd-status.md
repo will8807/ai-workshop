@@ -26,8 +26,8 @@
 - [x] **Phase 4: Backlog Refinement & Plan Development**
   - [x] Decompose plan into atomic, vertical-slice stories
   - [x] Map chronological dependencies
-- [ ] **Phase 5: Package Approval Gate**
-  - [ ] **Halt for User Control Gate 3**
+- [x] **Phase 5: Package Approval Gate**
+  - [x] **Halt for User Control Gate 3**
 - [ ] **Phase 6: Multi-Subagent Feature Implementation**
   - [ ] Log issues on GitHub
   - [ ] Run TDD loop for frontend and backend
@@ -49,7 +49,7 @@
 | **Phase 9: Peer Review** | *Pending* | *Pending* | *Pending* |
 
 ### Backlog Item Status
-- [ ] **Story 1: Backend Core, Pyproject.toml, and Game Logic Engine** (`Pending`)
+- [x] **Story 1: Backend Core, Pyproject.toml, and Game Logic Engine** (`Completed`)
 - [ ] **Story 2: Frontend Environment and Static UI Elements** (`Pending`)
 - [ ] **Story 3: Interactive HMI Loop and Countdown State Machine** (`Pending`)
 - [ ] **Story 4: Monolithic Build Integration and static file serving** (`Pending`)
