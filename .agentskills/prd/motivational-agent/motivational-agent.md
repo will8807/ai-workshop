@@ -26,6 +26,7 @@ The objective of this feature is to introduce a dedicated, humorous, and highly 
 ## 5. MBSE Baseline & Integration Analysis
 * **Added Parts/Systems**:
   - Adds a new subagent configuration: `.opencode/agents/motivational-coach.md`.
+  - Adds a new command file: `.opencode/commands/motivate.md` to enable calling the agent easily via the `/motivate` command.
   - Adds a runnable python script/module under `.opencode/scripts/motivational_coach.py` that implements the actual interactive terminal loop and humor algorithms.
 * **Modified Models**:
   - This subagent integrates with our agentic system as a specialized task runner. It doesn't modify the core backend database schemas but introduces a new helper script.
@@ -54,6 +55,11 @@ The objective of this feature is to introduce a dedicated, humorous, and highly 
   - **Type**: AFK
   - **What to build**: Implement `.opencode/scripts/motivational_coach.py` containing the CLI loop, ASCII animations, a rich pool of hype phrases, absurdist reframer logic, and the shredder text animation.
   - **Acceptance criteria**: Script executes without errors, is dependency-free, and handles all menu interactions smoothly.
+* **Proposed Issue 3**:
+  - **Title**: Create the /motivate trigger command file
+  - **Type**: AFK
+  - **What to build**: Implement `.opencode/commands/motivate.md` that registers the `/motivate` command, triggering the `motivational-coach` agent.
+  - **Acceptance criteria**: Command file exists, has correct frontmatter, and describes the trigger mechanism.
 
 ## 9. Workflow State & Checklist of Activities
 * **Current Workflow State**: **Phase 4: User Approval Gate**
